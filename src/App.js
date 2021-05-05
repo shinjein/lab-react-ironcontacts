@@ -15,6 +15,33 @@ class App extends React.Component {
     });
   }
 
+  sortByName = () => {
+    const sortName = this.state.contacts.sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
+    this.setState({
+      contacts: sortName,
+    });
+  };
+  
+
+  sortPopularity = () => {
+    const sortPopularity = this.state.contacts.sort(function (a, b) {
+      return a.popularity - b.popularity;
+    });
+    this.setState({
+      contacts: sortPopularity
+    });
+  };
+
+
+deletePerson = (id) => {
+  this.setState({
+    contacts: this.state.contacts.filter((contact) => contact.id !== id
+    )
+  })
+}
+
 render() {
   const { contacts } = this.state;
     return (
@@ -24,6 +51,7 @@ render() {
            <th>Name</th>
            <th>Picture</th>
            <th>Popularity</th>
+           <th>Options</th>
           </tr>
       {contacts.map(contact => {
         return (          
@@ -33,11 +61,18 @@ render() {
                <img src={contact.pictureUrl} alt="pic" />
              </td>
              <td>{contact.popularity}</td>
+             <td>
+              <button 
+              value={contact.id}
+              onClick={()=>this.deletePerson(contact.id)}>Delete</button> 
+             </td>
            </tr>
           )
         })}  
       </table>
       <button onClick={this.addContact}>Add Random Contact</button>
+      <button onClick={this.sortPopularity}>sort by popularity</button>
+      <button onClick={this.sortByName}>sort by name</button>
     </div>
     )
   }
